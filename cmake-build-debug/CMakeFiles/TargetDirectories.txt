@@ -1,0 +1,3 @@
+/home/ysun3/8190/hw4/Wedges/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/ysun3/8190/hw4/Wedges/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ysun3/8190/hw4/Wedges/cmake-build-debug/CMakeFiles/wedges.dir

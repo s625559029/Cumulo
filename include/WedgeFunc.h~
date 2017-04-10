@@ -1,0 +1,393 @@
+//
+// Created by ysun3 on 3/11/17.
+//
+
+#ifndef WEDGES_WEDGEFUNC_H
+#define WEDGES_WEDGEFUNC_H
+
+#include "PyroclasticSphere.h"
+#include "ImplicitFunction.h"
+#include "Draw.h"
+
+void printPara() {
+    float octaves[5] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+    float frequency[5] = {0.4243f, 1.5576f, 2.6429f, 3.7125f, 4.8439f};
+    float fjump[5] = {1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
+    float gamma[4] = {0.33333f, 1.0f, 1.7f, 2.4f};
+
+    for(int i = 0; i < 500; i++) {
+
+        int cur_i = i;
+        int o = cur_i / 100;
+        cur_i %= 100;
+        int fr = cur_i / 20;
+        cur_i %= 20;
+        int fj = cur_i / 4;
+        cur_i %= 4;
+        int g = cur_i;
+
+        cout << "frameid: " << i << " octaves: " << octaves[o] << " frequency: " << frequency[fr] << " fjump: "
+             << fjump[fj] << " gamma: " << gamma[g] << endl;
+    }
+}
+
+float mySin(float x)
+{
+    if(x > 0) return 0;
+    else return sin(x);
+}
+
+void drawPyrosphere(int start, int end, string output_path, string type)
+{
+    float octaves[5] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+    float frequency[5] = {0.4243f, 1.5576f, 2.6429f, 3.7125f, 4.8439f};
+    float fjump[5] = {1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
+    float gamma[4] = {0.33333f, 1.0f, 1.7f, 2.4f};
+
+
+    for(int i = start; i < end; i++) {
+
+        int cur_i = i;
+        int o = cur_i / 100;
+        cur_i %= 100;
+        int fr = cur_i / 20;
+        cur_i %= 20;
+        int fj = cur_i / 4 ;
+        cur_i %= 4;
+        int g = cur_i;
+
+        Noise_t parms;
+        parms.octaves = octaves[o];
+        parms.frequency = frequency[fr];
+        parms.fjump = fjump[fj];
+        parms.gamma = gamma[g];
+
+        FractalSum<PerlinNoiseGustavson> FSPN;
+        FSPN.setParameters(parms);
+        float radius = 1;
+        PyroclasticSphere ps(radius, FSPN);
+        Clamp clamp(ps, 5);
+
+        AABB bbox(Vector(-3 * radius, -3 * radius, -3 * radius),
+                  Vector(3 * radius, 3 * radius, 3 * radius));     // -2 -2 -2 2 2 2 for Psphere
+
+        Stamp stamper;
+
+        FloatGrid::Ptr psphere_grid = FloatGrid::create(0);
+        stamper.density_stamping(psphere_grid, clamp, 6 * radius / 600, bbox);
+        Gridded gridded_ps(psphere_grid);
+
+        float delta_x = bbox.bounds[1].X() - bbox.bounds[0].X();
+        float delta_y = bbox.bounds[1].Y() - bbox.bounds[0].Y();
+        float delta_z = bbox.bounds[1].Z() - bbox.bounds[0].Z();
+
+        float min_delta = min(delta_z, min(delta_x, delta_y));
+
+        VolumeColor ps_color(gridded_ps, Color(1, 1, 1, 1));
+
+        float l_grid_t = 0.005 * min_delta;
+        float l_delta_s = l_grid_t / 2.0864;
+
+        Light light1(Color(10, 10, 10, 1), Vector(0, 4, 0), gridded_ps, l_delta_s);
+        FloatGrid::Ptr light1_grid = FloatGrid::create(0);
+        stamper.light_stamping(light1_grid, light1, gridded_ps, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light1(light1_grid, light1.getColor(), K);
+
+        Light light2(Color(10, 10, 10, 1), Vector(0, -4, 0), gridded_ps, l_delta_s);
+        FloatGrid::Ptr light2_grid = FloatGrid::create(0);
+        stamper.light_stamping(light2_grid, light2, gridded_ps, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light2(light2_grid, light2.getColor(), K);
+
+        vector<Gridded_Light> lights;
+        lights.push_back(gridded_Light1);
+        lights.push_back(gridded_Light2);
+        LightSet lightSet(lights);
+
+        Draw(i, ps_color, gridded_ps, lightSet, bbox, output_path, type);
+    }
+}
+
+void drawNoise(int start, int end, string output_path, string type) {
+
+    float octaves[5] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+    float frequency[5] = {4.4243f, 1.5576f, 2.6429f, 3.7125f, 4.8439f};
+    float fjump[5] = {1.2f, 1.6f, 2.0f, 2.4f, 2.8f};
+    float fade[4] = {1.0f, 2.0f, 3.0f, 4.0f};
+    float pscale = 1;
+    float radius = 1;
+
+    for(int i = start; i < end; i++) {
+
+        int cur_i = i;
+        int o = cur_i / 100;
+        cur_i %= 100;
+        int fr = cur_i / 20;
+        cur_i %= 20;
+        int fj = cur_i / 4 ;
+        cur_i %= 4;
+        int f = cur_i;
+
+        Noise_t parms;
+        parms.octaves = octaves[o];
+        parms.frequency = frequency[fr];
+        parms.fjump = fjump[fj];
+        float gamma = fade[f];
+
+        AABB bbox(Vector(-5 * radius, -5 * radius, -5 * radius),
+                  Vector(5 * radius, 5 * radius, 5 * radius));     // -2 -2 -2 2 2 2 for Psphere
+
+        FractalSum<PerlinNoiseGustavson> FSPN;
+        FSPN.setParameters(parms);
+
+        Stamp stamper;
+
+        FloatGrid::Ptr noise_grid = FloatGrid::create(0);
+        stamper.noise_stamping(noise_grid, FSPN, pscale, gamma, 10 * radius / 600, bbox);
+        Gridded gridded_noise(noise_grid);
+
+        float delta_x = bbox.bounds[1].X() - bbox.bounds[0].X();
+        float delta_y = bbox.bounds[1].Y() - bbox.bounds[0].Y();
+        float delta_z = bbox.bounds[1].Z() - bbox.bounds[0].Z();
+
+        float min_delta = min(delta_z, min(delta_x, delta_y));
+        cout << min_delta << endl;
+        VolumeColor noise_color(gridded_noise, Color(1,1,1,1));
+
+        float l_grid_t = 0.005 * min_delta;
+        float l_delta_s = l_grid_t / 2.0864;
+
+        Light light1(Color(10, 10, 10, 1), Vector(0, 4, 0), gridded_noise, l_delta_s);
+        FloatGrid::Ptr light1_grid = FloatGrid::create(0);
+        stamper.light_stamping(light1_grid, light1, gridded_noise, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light1(light1_grid, light1.getColor(), K);
+
+        Light light2(Color(10, 10, 10, 1), Vector(0, -4, 0), gridded_noise, l_delta_s);
+        FloatGrid::Ptr light2_grid = FloatGrid::create(0);
+        stamper.light_stamping(light2_grid, light2, gridded_noise, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light2(light2_grid, light2.getColor(), K);
+
+        vector<Gridded_Light> lights;
+        lights.push_back(gridded_Light1);
+        lights.push_back(gridded_Light2);
+        LightSet lightSet(lights);
+
+        Draw(i, noise_color, gridded_noise, lightSet, bbox, output_path, type);
+    }
+}
+
+void drawWisps(int start, int end, string output_path, string type) {
+
+    float octaves[5] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
+    float frequency[5] = {0.4243f, 1.5576f, 2.6429f, 3.7125f, 4.8439f};//0.4243
+    float fjump[5] = {0.6f, 1.2f, 1.8f, 2.4f, 3.0f};//1.2
+    float clump[4] = {0.1f, 0.33f, 0.82f, 1.5f};//0.12
+
+    Vector p(0,0,0);
+    float radius = 1;
+    float opacity = 0.1;
+    float dscale = 1.5;
+
+    for(int i = start; i < end; i++) {
+
+        int cur_i = i;
+        int o = cur_i / 100;
+        cur_i %= 100;
+        int fr = cur_i / 20;
+        cur_i %= 20;
+        int fj = cur_i / 4 ;
+        cur_i %= 4;
+        int clu = cur_i;
+
+        Noise_t parms1;
+
+        Noise_t parms2;
+        parms2.octaves = octaves[o];
+        parms2.frequency = frequency[fr];
+        parms2.fjump = fjump[fj];
+
+        Particle particle(p, radius, clump[clu], opacity, dscale);
+
+        AABB bbox(Vector(-3 * radius, -3 * radius, -3 * radius),
+                  Vector(3 * radius, 3 * radius, 3 * radius));     // -2 -2 -2 2 2 2 for Psphere
+
+        Stamp stamper;
+        FloatGrid::Ptr wisps_grid = FloatGrid::create(0);
+        stamper.wisps_stamping(wisps_grid, 5000000, particle, parms1, parms2, 6 * radius / 600, bbox);
+        Gridded gridded_wisps(wisps_grid);
+
+        float delta_x = bbox.bounds[1].X() - bbox.bounds[0].X();
+        float delta_y = bbox.bounds[1].Y() - bbox.bounds[0].Y();
+        float delta_z = bbox.bounds[1].Z() - bbox.bounds[0].Z();
+
+        float min_delta = min(delta_z, min(delta_x, delta_y));
+
+        VolumeColor ps_color(gridded_wisps, Color(1, 1, 1, 1));
+
+        float l_grid_t = 0.005 * min_delta;
+        float l_delta_s = l_grid_t;// / 2.0864;
+
+        Light light1(Color(10, 10, 10, 1), Vector(0, 4, 0), gridded_wisps, l_delta_s);
+        FloatGrid::Ptr light1_grid = FloatGrid::create(0);
+        stamper.light_stamping(light1_grid, light1, gridded_wisps, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light1(light1_grid, light1.getColor(), K);
+
+        Light light2(Color(10, 10, 10, 1), Vector(0, -4, 0), gridded_wisps, l_delta_s);
+        FloatGrid::Ptr light2_grid = FloatGrid::create(0);
+        stamper.light_stamping(light2_grid, light2, gridded_wisps, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light2(light2_grid, light2.getColor(), K);
+
+        vector<Gridded_Light> lights;
+        lights.push_back(gridded_Light1);
+        lights.push_back(gridded_Light2);
+        LightSet lightSet(lights);
+
+        Draw(i, ps_color, gridded_wisps, lightSet, bbox, output_path, type);
+    }
+
+}
+
+void drawPipe(int start, int end, string output_path, string type)
+{
+
+    float octaves = 5.0;
+    float frequency = 0.4243;
+    float fjump = 2.4;
+    float gamma = 0.33333;
+    float pscale = 1; // new
+    float speed = 0.05;
+    float amp_speed = 0.3;
+    float radius = 1;
+    float my_amplitude = 40;
+
+    //Initialize translate vector
+    Vector vector_t[36];
+    vector_t[0] = Vector(-10, 0, 10);
+    for(int num = 1; num < 10; num++) {
+        vector_t[num] = Vector(vector_t[num-1].X(), vector_t[num-1].Y(), vector_t[num-1].Z()-1.75);
+    }
+    for(int num = 10; num < 19; num++) {
+        vector_t[num] = Vector(vector_t[num-1].X()+1.75, vector_t[num-1].Y(), vector_t[num-1].Z());
+    }
+    for(int num = 19; num < 28; num++) {
+        vector_t[num] = Vector(vector_t[num-1].X(), vector_t[num-1].Y(), vector_t[num-1].Z()+1.75);
+    }
+    for(int num = 28; num < 36; num++) {
+        vector_t[num] = Vector(vector_t[num-1].X()-1.75, vector_t[num-1].Y(), vector_t[num-1].Z());
+    }//Initialize translate vector
+
+    //Initialize radius
+    float radius_list[36];
+    for(int num = 0; num < 36; num++) {
+        radius_list[num] = radius / 1.5 + drand48() / 1.5;
+    }//Initialize radius
+
+    //Initialize noise parameters
+    Noise_t parms[36];
+    for(int num = 0; num < 36; num++) {
+        parms[num].octaves = octaves;
+        parms[num].frequency = frequency + drand48() / 2;
+        parms[num].fjump = fjump + drand48();
+        parms[num].gamma = gamma;
+        parms[num].pscale = pscale;
+    }
+    Vector translate_list[36];
+    for(int num = 1; num < 9; num++) {
+        translate_list[num] = Vector(0,0,-1);
+    }
+    for(int num = 10; num < 18; num++) {
+        translate_list[num] = Vector(1,0,0);
+    }
+    for(int num = 19; num < 27; num++) {
+        translate_list[num] = Vector(0,0,1);
+    }
+    for(int num = 28; num < 36; num++) {
+        translate_list[num] = Vector(-1,0,0);
+    }
+    //Initialize noise parameters
+
+    for(int id = start; id < end; id++) {
+
+        FractalSum<PerlinNoiseGustavson> FSPN[36];
+
+        parms[0].angle = speed * id;
+        parms[9].angle = speed * id;
+        parms[18].angle = speed * id;
+        parms[27].angle = speed * id;
+
+        //Change translate
+        for(int num = 0; num < 36; num++) {
+            parms[num].translate = speed * id * translate_list[num];
+            float cur_num = num - id * amp_speed;
+            if(cur_num < 0) parms[num].amplitude = 1 + my_amplitude * (1 + mySin(num - id * amp_speed - 3.14/2)) / 2;
+            FSPN[num].setParameters(parms[num]);
+        }
+
+        //Create 36 pyro spheres in a std vector
+        vector<VolumeFloatPtr> vector_ps;
+        for(int num = 0; num < 36; num++) {
+            VolumeFloatPtr ps = new PyroclasticSphere(radius_list[num], FSPN[num]);
+            VolumeFloatPtr t_ps = new Translate(*ps, vector_t[num]);
+            vector_ps.push_back(t_ps);
+        }
+
+        //Create color for wave
+        vector<VolumeColorPtr> color_list;
+        for(int num = 0; num < 36; num++)
+        {
+            float a = parms[num].amplitude / my_amplitude;
+            Color *c = new Color;
+            *c = Color(1, 1, 1, 1) + Color(a * 1, 0, 0, 0);
+            VolumeColorPtr vc = new VolumeColor(*vector_ps[num], *c);
+            color_list.push_back(vc);
+        }
+
+        UnionList ul(vector_ps);
+        UnionColorList ucl(color_list);
+
+        Clamp clamp(ul, 1);
+
+        AABB bbox(Vector(-13 * radius, -4 * radius, -13 * radius),
+                Vector(13 * radius, 4 * radius, 13 * radius));     // -2 -2 -2 2 2 2 for Psphere
+
+        Stamp stamper;
+
+        FloatGrid::Ptr psphere_grid = FloatGrid::create(0);
+        stamper.density_stamping(psphere_grid, clamp, 12 * radius / 120, bbox);      //should use radius / 120
+        Gridded gridded_ps(psphere_grid);                                           //for test use 12 * radius / 50
+
+        //stamp color to grid/
+        Vec4fGrid::Ptr color_grid = Vec4fGrid::create(Vec4s(0,0,0,0));
+        stamper.color_stamping(color_grid, ucl, 12 * radius / 80, bbox);
+        Gridded_Color gridded_color(color_grid, 1);
+
+        VolumeColor ps_color(gridded_ps, Color(1, 1, 1, 1));
+
+        float delta_x = bbox.bounds[1].X() - bbox.bounds[0].X();
+        float delta_y = bbox.bounds[1].Y() - bbox.bounds[0].Y();
+        float delta_z = bbox.bounds[1].Z() - bbox.bounds[0].Z();
+
+        float min_delta = min(delta_z, min(delta_x, delta_y));
+
+        float l_grid_t = 0.02 * min_delta;     //should use 0.02 * min_delta
+        float l_delta_s = l_grid_t / 2.0864;   //for test use 0.03 * min_delta
+
+        Light light1(Color(10, 10, 10, 1), Vector(0, 10, 0), gridded_ps, l_delta_s);
+        FloatGrid::Ptr light1_grid = FloatGrid::create(0);
+        stamper.light_stamping(light1_grid, light1, gridded_ps, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light1(light1_grid, light1.getColor(), K);
+
+        Light light2(Color(10, 10, 10, 1), Vector(0, -10, 0), gridded_ps, l_delta_s);
+        FloatGrid::Ptr light2_grid = FloatGrid::create(0);
+        stamper.light_stamping(light2_grid, light2, gridded_ps, l_grid_t, bbox);// 0.03
+        Gridded_Light gridded_Light2(light2_grid, light2.getColor(), K);
+
+        vector<Gridded_Light> lights;
+        lights.push_back(gridded_Light1);
+        lights.push_back(gridded_Light2);
+        LightSet lightSet(lights);
+
+        //Draw(id, ps_color, gridded_ps, lightSet, bbox, output_path, type);
+        Draw(id, gridded_color, gridded_ps, lightSet, bbox, output_path, type);
+    }
+}
+#endif //WEDGES_WEDGEFUNC_H

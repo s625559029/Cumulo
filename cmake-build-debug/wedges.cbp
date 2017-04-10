@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="wedges"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/ysun3/8190/hw4/Wedges/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/ysun3/8190/hw4/Wedges/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/ysun3/8190/hw4/Wedges/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="wedges">
+				<Option output="/home/ysun3/8190/hw4/Wedges/cmake-build-debug/wedges" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ysun3/8190/hw4/Wedges/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/ysun3/8190/hw4/Wedges/include"/>
+					<Add directory="/group/dpa/local/openvdb/include"/>
+					<Add directory="/usr/include/c++/4.8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8"/>
+					<Add directory="/usr/include/c++/4.8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 wedges"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="wedges/fast">
+				<Option output="/home/ysun3/8190/hw4/Wedges/cmake-build-debug/wedges" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/ysun3/8190/hw4/Wedges/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/ysun3/8190/hw4/Wedges/include"/>
+					<Add directory="/group/dpa/local/openvdb/include"/>
+					<Add directory="/usr/include/c++/4.8"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/4.8"/>
+					<Add directory="/usr/include/c++/4.8/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 wedges/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/ysun3/8190/hw4/Wedges/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/CumuloFunc.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/IdentityVector.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/Particle.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/VAdvect.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/VNoise.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/Warp.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/include/WedgeFunc.h">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Camera.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Gridded.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Image.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Light.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Noise.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/OIIOFiles.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/ObjReader.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/PerlinNoise.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Pyroclastic.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/PyroclasticSphere.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/Stamp.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/vdb_ObjReader.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/src/wedges.C">
+			<Option target="wedges"/>
+		</Unit>
+		<Unit filename="/home/ysun3/8190/hw4/Wedges/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
